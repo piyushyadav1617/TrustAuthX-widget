@@ -722,6 +722,8 @@ useEffect(()=>{
     setErrMsg('');
     setErr(false);
     setLoading2(true);
+    setOtp('');
+    setPass('');
     //checking if email field is empty
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setErrMsg('Enter a valid Email!');
@@ -852,7 +854,7 @@ useEffect(()=>{
               } else if (!storeOrgData.strict_mfa) {
                 //if the user has not enbaled mfa
                 if (userInfo.fa2 === null || userInfo.fa2 === false) {
-                  setMfaInProcess(true)
+                  setMfaInProcess(false)
                   setShowEnableMfaLink(true);
                   //to handle user action after the choice to activate mfa is given
                   setMessage('Please Check Your Email To Verify!');

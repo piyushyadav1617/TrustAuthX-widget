@@ -11,6 +11,7 @@ import { useOrgData, useUserData } from './widgetStore'; //import zustand store 
 import widgetStyle from './widget.module.css';
 import convertToApproxTime from './approxTime';
 import github from './github-mark.png'
+import microsoft from './microsoft.png'
 export default function Widget() {
    //store function to set the org data in the store. It takes two arguments org token and org data.
    const setOrgData = useOrgData(state => state.setOrgData);
@@ -45,7 +46,8 @@ export default function Widget() {
    const [showMfaPopup, setShowMfaPopup] = useState(false);
    //state variable to show and hide dead end message panel
    const [showMsgPanel, setShowMsgPanel] = useState(false);
- 
+ //state variable to show and hide social login 
+  const [showSocial, setShowSocial] = useState(false);
    //state varibale to show the enable mfa link to take the user input whether he wants to enable mfa or not
    const [showEnableMfaLink, setShowEnableMfaLink] = useState(false);
    // state varibale to store whether the user has selected enable mfa or not
@@ -705,9 +707,7 @@ useEffect(()=>{
         setOrgData(org_token, data);
         //set loading to false and display the widget, styled according to the org data for which can be found in the data.widget
         setLoading1(false);
-        // if (data.fa2 === true && data.strict_mfa === false) {
-        //   setShowEnableMfaLink(true);
-        // }
+        setShowSocial(true);
       }
     } catch (err) {
       console.log(err);
@@ -738,7 +738,7 @@ useEffect(()=>{
       // console.log(response)
       const data = (await response.json()) as any;
       setLoading2(false);
-
+      setShowSocial(false); 
       console.log(data);
 
       //if a 422 validation error occurs
@@ -1294,23 +1294,37 @@ useEffect(()=>{
               </div>
             )}
             <div className='text-sm w-full text-right mt-1 text-blue-400 hover:text-blue-600 cursor-pointer' onClick={reset} >Retry with another email</div>
-           {/* {!showMfaActivation?( <><div className="flex w-full justify-center mt-2">
+           {showSocial?( <><div className="flex w-full justify-center mt-2">
               <div className="mt-2 w-[136px] border-t-2 border-gray-900 "></div>
               <span className="px-1"> or </span>
               <div className="mt-2 w-[136px] border-t-2 border-gray-900 "></div>
             </div>
-            <div className="flex mt-4 justify-around">
-           
+            <div className="flex flex-row flex-wrap mt-4 gap-4">
+              <div> 
               <button
+              
                 onClick={() => socialLogin('github')}
               >
                 <Image
+                
                 src={github}
                 alt='github'
                 width={35}
                 />
               </button>
-            </div></>):""} */}
+              </div>
+              <div> 
+              <button
+                onClick={() => socialLogin('microsoft')}
+              >
+                <Image
+                src={microsoft}
+                alt='github'
+                width={32}
+                />
+              </button>
+              </div>
+            </div></>):""}
           </div>
         </div>
       )}

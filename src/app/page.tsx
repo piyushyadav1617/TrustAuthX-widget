@@ -941,12 +941,12 @@ useEffect(()=>{
             //when org has disabled strict mfa but fa2 is there, so user may choose fa2
             if (userInfo.fa2 === true) {
               //is user has enabled fa2
-              
-              
               setShowPassField(true);
               setButtonAction('showMfaPopup');
               return;
             } else if (userInfo.fa2 === null || userInfo.fa2 === false) {
+              setButtonAction('login-password')
+              setShowPassField(true);
               setMfaInProcess(true)
               setShowEnableMfaLink(true);
               //to handle user action after the choice to activate mfa is given

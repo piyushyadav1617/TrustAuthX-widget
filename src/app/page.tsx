@@ -12,6 +12,7 @@ import widgetStyle from './widget.module.css';
 import convertToApproxTime from './approxTime';
 import github from './github-mark.png'
 import microsoft from './microsoft.png'
+import google from './google.png'
 export default function Widget() {
    //store function to set the org data in the store. It takes two arguments org token and org data.
    const setOrgData = useOrgData(state => state.setOrgData);
@@ -1319,8 +1320,19 @@ useEffect(()=>{
               >
                 <Image
                 src={microsoft}
-                alt='github'
+                alt='microsoft'
                 width={32}
+                />
+              </button>
+              </div>
+              <div> 
+              <button
+                onClick={() => socialLogin('google')}
+              >
+                <Image
+                src={google}
+                alt='google'
+                width={35}
                 />
               </button>
               </div>

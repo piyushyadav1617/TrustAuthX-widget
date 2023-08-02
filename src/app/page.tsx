@@ -716,7 +716,6 @@ export default function Widget() {
 
   //first action by the user, when the user clicks on the go button after putting in the email
   const handleSubmit = async () => {
-    setShowSocial(false); 
     setErrMsg('');
     setErr(false);
     setLoading2(true);
@@ -754,6 +753,8 @@ export default function Widget() {
        
         return setErr(true);
       }
+    setShowSocial(false); 
+
       //seperating user token and user details from the response data json
       const { user_token, mfa_code, ...rest } = data;
       const userInfo = rest.public;
@@ -1060,7 +1061,7 @@ export default function Widget() {
     console.log('social')
     const url = `https://api.trustauthx.com/single/social/signup?provider=${social}&OrgToken=${storeOrg_token}`;
    
-    // router.push(url);
+    router.push(url);
   };
 
   // resend email

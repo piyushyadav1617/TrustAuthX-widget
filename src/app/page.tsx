@@ -1059,9 +1059,11 @@ export default function Widget() {
   };
   //functions for social login
   const socialLogin = (social: string) => {
-    console.log('social')
     const url = `https://api.trustauthx.com/single/social/signup?provider=${social}&OrgToken=${storeOrg_token}`;
     router.push(url);
+    reset();
+
+
   };
 
   // resend email

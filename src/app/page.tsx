@@ -78,6 +78,7 @@ export default function Widget() {
      //fetch the org details as soon as page loads
   useEffect(() => {
     fetchOrgDetails();
+    // setShowSocial(true);
   },[]);
   // useEffect(() => {
   //   console.log(currentUserToken);
@@ -708,7 +709,7 @@ useEffect(()=>{
         setOrgData(org_token, data);
         //set loading to false and display the widget, styled according to the org data for which can be found in the data.widget
         setLoading1(false);
-        setShowSocial(true);
+        
       }
     } catch (err) {
       console.log(err);
@@ -719,6 +720,7 @@ useEffect(()=>{
 
   //first action by the user, when the user clicks on the go button after putting in the email
   const handleSubmit = async () => {
+    // setShowSocial(false); 
     setErrMsg('');
     setErr(false);
     setLoading2(true);
@@ -741,7 +743,7 @@ useEffect(()=>{
       // console.log(response)
       const data = (await response.json()) as any;
       setLoading2(false);
-      setShowSocial(false); 
+      
       console.log(data);
 
       //if a 422 validation error occurs
@@ -1064,14 +1066,15 @@ useEffect(()=>{
   };
 
   // resend email
-  const sendEmailAgain = async () => {
-    const response = await fetch(
-      `https://api.trustauthx.com/user/me/auth?usr=${email}&OrgToken=${storeOrg_token}`,
-      {
-        method: 'GET'
-      }
-    );
-  };
+  // const sendEmailAgain = async () => {
+  //   const response = await fetch(
+  //     `https://api.trustauthx.com/user/me/auth?usr=${email}&OrgToken=${storeOrg_token}`,
+  //     {
+  //       method: 'GET'
+  //     }
+  //   );
+  // };
+
   const reset = ()=>{
     location.reload();
   }
@@ -1192,7 +1195,7 @@ useEffect(()=>{
                 )}
                 <span
                   className="text-blue-400 hover:text-blue-600 cursor-pointer"
-                  onClick={sendEmailAgain}
+                  // onClick={sendEmailAgain}
                 >
                   Did not receive email? Try again.
                 </span>
@@ -1297,7 +1300,7 @@ useEffect(()=>{
               </div>
             )}
             <div className='text-sm w-full text-right mt-1 text-blue-400 hover:text-blue-600 cursor-pointer' onClick={reset} >Retry with another email</div>
-           {showSocial?( <><div className="flex w-full justify-center mt-2">
+           ( <><div className="flex w-full justify-center mt-2">
               <div className="mt-2 w-[136px] border-t-2 border-gray-900 "></div>
               <span className="px-1"> or </span>
               <div className="mt-2 w-[136px] border-t-2 border-gray-900 "></div>
@@ -1305,7 +1308,7 @@ useEffect(()=>{
             <div className="flex flex-row flex-wrap mt-4 gap-4">
               <div> 
               <button
-              
+                 type='submit'
                 onClick={() => socialLogin('github')}
               >
                 <Image
@@ -1318,6 +1321,7 @@ useEffect(()=>{
               </div>
               <div> 
               <button
+               type='submit'
                 onClick={() => socialLogin('microsoft')}
               >
                 <Image
@@ -1329,6 +1333,7 @@ useEffect(()=>{
               </div>
               <div> 
               <button
+               type='submit'
                 onClick={() => socialLogin('google')}
               >
                 <Image
@@ -1338,7 +1343,7 @@ useEffect(()=>{
                 />
               </button>
               </div>
-            </div></>):""}
+            </div></>)
           </div>
         </div>
       )}

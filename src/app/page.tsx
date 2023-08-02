@@ -81,13 +81,6 @@ export default function Widget() {
   useEffect(() => {
     fetchOrgDetails();
   },[]);
-  // useEffect(() => {
-  //   console.log(currentUserToken);
-  // }, [currentUserToken]);
-useEffect(()=>{
-  console.log(buttonAction)
-
-},[buttonAction])
   //function to handle when the user decides to enable mfa from his side
   const handleUserMfa = () => {
     if (enableUserMfa) {
@@ -1064,9 +1057,10 @@ useEffect(()=>{
   };
   //functions for social login
   const socialLogin = (social: string) => {
+    console.log('social')
     const url = `https://api.trustauthx.com/single/social/signup?provider=${social}&OrgToken=${storeOrg_token}`;
-    setSelectedSocial(social)
-    router.push(url);
+   
+    // router.push(url);
   };
 
   // resend email
@@ -1136,10 +1130,7 @@ useEffect(()=>{
         break;
     }
   };
-  useEffect(() => {
-    // Clear the selected social login option when the component mounts
-    setSelectedSocial('');
-  }, []);
+ 
 
   return (
     <>
@@ -1307,7 +1298,7 @@ useEffect(()=>{
               </div>
             )}
             <div className='text-sm w-full text-right mt-1 text-blue-400 hover:text-blue-600 cursor-pointer' onClick={reset} >Retry with another email</div>
-           ( <><div className="flex w-full justify-center mt-2">
+           {showSocial?( <><div className="flex w-full justify-center mt-2">
               <div className="mt-2 w-[136px] border-t-2 border-gray-900 "></div>
               <span className="px-1"> or </span>
               <div className="mt-2 w-[136px] border-t-2 border-gray-900 "></div>
@@ -1350,7 +1341,7 @@ useEffect(()=>{
                 />
               </button>
               </div>
-            </div></>)
+            </div></>):""}
           </div>
         </div>
       )}

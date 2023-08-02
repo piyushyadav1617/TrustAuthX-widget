@@ -1136,7 +1136,10 @@ useEffect(()=>{
         break;
     }
   };
-
+  useEffect(() => {
+    // Clear the selected social login option when the component mounts
+    setSelectedSocial('');
+  }, []);
 
   return (
     <>

@@ -10,10 +10,10 @@ import { useRouter } from 'next/navigation';
 import { useOrgData, useUserData } from './widgetStore'; //import zustand store to store and update org data
 import widgetStyle from './widget.module.css';
 import convertToApproxTime from './approxTime';
-import github from './github-mark.png'
-import microsoft from './microsoft.png'
-import google from './google.png'
-import discord from './discord.png'
+import github from './github-mark.svg'
+import microsoft from './microsoft.svg'
+import google from './google.svg'
+import discord from './discord.svg'
 export default function Widget() {
    //store function to set the org data in the store. It takes two arguments org token and org data.
    const setOrgData = useOrgData(state => state.setOrgData);

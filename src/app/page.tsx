@@ -71,6 +71,8 @@ export default function Widget() {
  
    //checkbox varibale
    const [checked, setChecked] = useState(false);
+   const [selectedSocial, setSelectedSocial] = useState('');
+
    //search the url for the param org_id to fetch details for that org
    const searchParams = useSearchParams();
    const org_id = searchParams.get('org_id');
@@ -78,7 +80,6 @@ export default function Widget() {
      //fetch the org details as soon as page loads
   useEffect(() => {
     fetchOrgDetails();
-    // setShowSocial(true);
   },[]);
   // useEffect(() => {
   //   console.log(currentUserToken);
@@ -700,6 +701,8 @@ useEffect(()=>{
         
       }
       if (response.status === 200) {
+       setShowSocial(true);
+
         const orgData = (await response.json()) as any;
 
         const { org_token, ...rest } = orgData;
@@ -720,7 +723,7 @@ useEffect(()=>{
 
   //first action by the user, when the user clicks on the go button after putting in the email
   const handleSubmit = async () => {
-    // setShowSocial(false); 
+    setShowSocial(false); 
     setErrMsg('');
     setErr(false);
     setLoading2(true);
@@ -1062,6 +1065,7 @@ useEffect(()=>{
   //functions for social login
   const socialLogin = (social: string) => {
     const url = `https://api.trustauthx.com/single/social/signup?provider=${social}&OrgToken=${storeOrg_token}`;
+    setSelectedSocial(social)
     router.push(url);
   };
 

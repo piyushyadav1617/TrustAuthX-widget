@@ -13,6 +13,7 @@ import convertToApproxTime from './approxTime';
 import github from './github-mark.png'
 import microsoft from './microsoft.png'
 import google from './google.png'
+import discord from './discord.png'
 export default function Widget() {
    //store function to set the org data in the store. It takes two arguments org token and org data.
    const setOrgData = useOrgData(state => state.setOrgData);
@@ -1060,7 +1061,6 @@ export default function Widget() {
   const socialLogin = (social: string) => {
     console.log('social')
     const url = `https://api.trustauthx.com/single/social/signup?provider=${social}&OrgToken=${storeOrg_token}`;
-   
     router.push(url);
   };
 
@@ -1339,6 +1339,18 @@ export default function Widget() {
                 src={google}
                 alt='google'
                 width={35}
+                />
+              </button>
+              </div>
+              <div> 
+              <button
+               type='submit'
+                onClick={() => socialLogin('discord')}
+              >
+                <Image
+                src={discord}
+                alt='discord'
+                width={40}
                 />
               </button>
               </div>

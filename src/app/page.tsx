@@ -1060,8 +1060,8 @@ export default function Widget() {
   //functions for social login
   const socialLogin = (social: string) => {
     const url = `https://api.trustauthx.com/single/social/signup?provider=${social}&OrgToken=${storeOrg_token}`;
-    reset();
-    router.push(url);
+    // reset();
+    window.location.href = url;
 
 
   };

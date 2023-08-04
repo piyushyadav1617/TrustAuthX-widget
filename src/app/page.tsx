@@ -69,7 +69,7 @@ export default function Widget() {
    const [qr, setQr] = useState('');
    //state variable to chnage the button actions
    const [buttonAction, setButtonAction] = useState('');
- 
+   const [btnAction, setBtnAction] = useState<ButtonAction>()
    //checkbox varibale
    const [checked, setChecked] = useState(false);
    const [selectedSocial, setSelectedSocial] = useState('');
@@ -78,7 +78,8 @@ export default function Widget() {
    const searchParams = useSearchParams();
    const org_id = searchParams.get('org_id');
 
-     //fetch the org details as soon as page loads
+   
+  //fetch the org details as soon as page loads
   useEffect(() => {
     fetchOrgDetails();
   },[]);
@@ -87,6 +88,7 @@ export default function Widget() {
     if (enableUserMfa) {
       //display the panel for activating MFA which will have QR code to enable the authentication and the 6 didit mfa code input field
       //construct the MFA panel with QR code and input field
+      setBtnAction(ButtonAction.MfaActivationSignup);
       setButtonAction('mfa-activation-signup');
       setShowMfaActivation(true);
     } else if (!enableUserMfa) {
@@ -195,7 +197,8 @@ export default function Widget() {
             if (storeUserData.fa2 === true) {
               //login user by putting in mfa
               //show mfa popup and make a post request by sending the mfa otp
-
+              setBtnAction(ButtonAction.MfaLogin);
+              
               setButtonAction('mfa-login');
               setLoading2(false);
               return setShowMfaPopup(true);
@@ -204,6 +207,8 @@ export default function Widget() {
               storeUserData.fa2 === null ||
               storeUserData.fa2 === false
             ) {
+              setBtnAction(ButtonAction.MfaActivationSignup);
+
               setButtonAction('mfa-activation-signup');
               setLoading2(false);
               return setShowMfaActivation(true);
@@ -225,6 +230,8 @@ export default function Widget() {
             else if (storeUserData.fa2 === true) {
               //show mfa popup to send the mfa back to backend and verify
               setShowEnableMfaLink(false);
+              setBtnAction(ButtonAction.MfaLogin);
+
               setButtonAction('mfa-login');
               setShowMfaPopup(true);
               return;
@@ -279,8 +286,12 @@ export default function Widget() {
         setShowEnableMfaLink(false);
         console.log(mfaInProcess)
         if(mfaInProcess===true){
+          setBtnAction(ButtonAction.MfaActivationLogin);
+
          setButtonAction('mfa-activation-login');
         }else if(mfaInProcess===false){
+          setBtnAction(ButtonAction.MfaActivationSignup);
+
          setButtonAction('mfa-activation-signup');
         }
         setShowMfaActivation(true);
@@ -538,6 +549,8 @@ export default function Widget() {
        setShowMfaPopup(false);
        setShowMfaActivation(false);
        setShowPassField(true);
+       setBtnAction(ButtonAction.ShowMfaPopup);
+
        setButtonAction('showMfaPopup')
        return;
           
@@ -782,13 +795,13 @@ export default function Widget() {
               if (userInfo.fa2 === true) {
                 //login user by putting in mfa
                 //show mfa popup and make a post request by sending the mfa otp
-
+                setBtnAction(ButtonAction.MfaLogin);
                 setButtonAction('mfa-login');
               
                 return setShowMfaPopup(true);
               } else if (userInfo.fa2 === null || userInfo.fa2 === false) {
                 //if user has not taken any action
-
+                setBtnAction(ButtonAction.MfaActivationSignup);
                 setButtonAction('mfa-activation-signup');
                
                 return setShowMfaActivation(true);
@@ -811,6 +824,7 @@ export default function Widget() {
               else if (userInfo.fa2 === true) {
                 //show mfa popup to send the mfa back to backend and verify
                 setShowEnableMfaLink(false);
+                setBtnAction(ButtonAction.MfaLogin);
                 setButtonAction('mfa-login');
                 
                 setShowMfaPopup(true);
@@ -839,12 +853,14 @@ export default function Widget() {
                 if (userInfo.fa2 === true) {
                   //login user by putting in mfa
                   //show mfa popup and make a post request by sending the mfa otp
-
+                setBtnAction(ButtonAction.MfaLogin);
+                  
                   setButtonAction('mfa-login');
                  
                   return setShowMfaPopup(true);
                   //if user has not taken any action or has not enabled fa2
                 } else if (userInfo.fa2 === null || userInfo.fa2 === false) {
+                  setBtnAction(ButtonAction.MfaActivationSignup);
                   setButtonAction('mfa-activation-signup');
                   
                   return setShowMfaActivation(true);
@@ -865,6 +881,7 @@ export default function Widget() {
                 //if the user has enabled mfa
                 else if (userInfo.fa2 === true) {
                   //show mfa popup to send the mfa back to backend and verify
+                  setBtnAction(ButtonAction.MfaLogin);
                  
                   setButtonAction('mfa-login');
                   setShowMfaPopup(true);
@@ -885,6 +902,8 @@ export default function Widget() {
           ) {
             
             //ask user to put password in the for the first time in the password field and hit go button
+            setBtnAction(ButtonAction.FirstPassword);
+
             setButtonAction('first-password');
             setShowPassField(true);
             return;
@@ -920,6 +939,8 @@ export default function Widget() {
                   setCurrentUserToken(resData.user_token);
                   setQr(decryptCode(resData.mfa_code));
                   setShowEnableMfaLink(false);
+            setBtnAction(ButtonAction.MfaActivationLogin);
+
                   setButtonAction('mfa-activation-login');
                   setShowMfaActivation(true);
                   return;
@@ -937,6 +958,8 @@ export default function Widget() {
               //show the password input then the mfa popup and send the post request with both pass and mfa totp
               
               setShowPassField(true);
+            setBtnAction(ButtonAction.ShowMfaPopup);
+
               setButtonAction('showMfaPopup');
               return;
             }
@@ -945,9 +968,13 @@ export default function Widget() {
             if (userInfo.fa2 === true) {
               //is user has enabled fa2
               setShowPassField(true);
+              setBtnAction(ButtonAction.ShowMfaPopup);
+
               setButtonAction('showMfaPopup');
               return;
             } else if (userInfo.fa2 === null || userInfo.fa2 === false) {
+              setBtnAction(ButtonAction.LoginPassword);
+
               setButtonAction('login-password')
               setShowPassField(true);
               setMfaInProcess(true)
@@ -959,6 +986,7 @@ export default function Widget() {
           }
         } else if (!storeOrgData.fa2) {
           //when MFA is disabled by thre org, just show the password field and make a post request by sending the password
+          setBtnAction(ButtonAction.LoginPassword);
          
           setButtonAction('login-password')
           setShowPassField(true);
@@ -973,6 +1001,8 @@ export default function Widget() {
         );
         setShowMsg(true);
         setShowPassField(true);
+        setBtnAction(ButtonAction.NewPasswordRequest);
+
         setButtonAction('newPasswordRequest');
         return;
       } else if (response.status == 205) {
@@ -1005,6 +1035,7 @@ export default function Widget() {
                 if (res.status === 203) {
                   setCurrentUserToken(resData.user_token);
                   setQr(decryptCode(resData.mfa_code));
+        setBtnAction(ButtonAction.MfaActivationLogin);
                   
                   setButtonAction('mfa-activation-login');
                   setShowMfaActivation(true);
@@ -1023,6 +1054,8 @@ export default function Widget() {
               //show the password input then the mfa popup and send the post request with both pass and mfa totp
               
               setShowMfaPopup(true)
+        setBtnAction(ButtonAction.PasswordlessLoginMfa);
+
               setButtonAction('passwordless-login-mfa');
               return;
             }
@@ -1031,6 +1064,7 @@ export default function Widget() {
             if (userInfo.fa2 === true) {
               //is user has enabled fa2
               setShowMfaPopup(true)
+              setBtnAction(ButtonAction.PasswordlessLoginMfa);
               setButtonAction('passwordless-login-mfa');
               return;
             } else if (userInfo.fa2 === null || userInfo.fa2 === false) {
@@ -1061,9 +1095,7 @@ export default function Widget() {
   const socialLogin = (social: string) => {
     const url = `https://api.trustauthx.com/single/social/signup?provider=${social}&OrgToken=${storeOrg_token}`;
     // reset();
-    window.location.href = url;
-
-
+    window.location.href = url; //next router was creating a problem in routing back that's why window object is being used
   };
 
   // resend email
@@ -1087,52 +1119,107 @@ export default function Widget() {
       return setErr(true);
     }
     setShowMfaPopup(true);
+    setBtnAction(ButtonAction.LoginPasswordMfa);
     setButtonAction('login-password-mfa');
   };
 
-
+  enum ButtonAction {
+    ShowMfaPopup,
+    NewPasswordRequest,
+    VerifyEmail,
+    FirstPassword,
+    LoginPassword,
+    LoginPasswordMfa,
+    PasswordlessLogin,
+    PasswordlessLoginMfa,
+    MfaLogin,
+    MfaActivationSignup,
+    MfaActivationLogin
+  }
 
   //change the action of the button based on responses
-  const handleGo = () => {
-    switch (buttonAction) {
-      case 'showMfaPopup':
+  const handleGo = () =>{
+    switch (btnAction) {
+      case ButtonAction.ShowMfaPopup:
         showMfaPopupForLogin();
         break;
-      case 'newPasswordRequest':
+      case ButtonAction.NewPasswordRequest:
         newPasswordRequest();
         break;
-      case 'verify_email':
+      case ButtonAction.VerifyEmail:
         handleUserMfa();
         break;
-      case 'first-password':
+      case ButtonAction.FirstPassword:
         handleNewPassword();
         break;
-      case 'login-password':
+      case ButtonAction.LoginPassword:
         loginWithPassword();
         break;
-       case 'login-password-mfa':
+      case ButtonAction.LoginPasswordMfa:
         loginWithPasswordMFA();
-        break;    
-      case 'passwordless-login':
+        break;
+      case ButtonAction.PasswordlessLogin:
         passwordlessLogin();
         break;
-      case 'passwordless-login-mfa':
+      case ButtonAction.PasswordlessLoginMfa:
         passwordlessLoginMfa();
-        break;    
-      case 'mfa-login':
+        break;
+      case ButtonAction.MfaLogin:
         handleMFA();
         break;
-      case 'mfa-activation-signup':
+      case ButtonAction.MfaActivationSignup:
         handleMFActivation(false);
         break;
-      case 'mfa-activation-login':
+      case ButtonAction.MfaActivationLogin:
         handleMFActivation(true);
-        break;
+        break;             
       default:
         handleSubmit();
         break;
     }
-  };
+  }
+
+  //change the action of the button based on responses
+  // const handleGo = () => {
+  //   switch (buttonAction) {
+  //     case 'showMfaPopup':
+  //       showMfaPopupForLogin();
+  //       break;
+  //     case 'newPasswordRequest':
+  //       newPasswordRequest();
+  //       break;
+  //     case 'verify_email':
+  //       handleUserMfa();
+  //       break;
+  //     case 'first-password':
+  //       handleNewPassword();
+  //       break;
+  //     case 'login-password':
+  //       loginWithPassword();
+  //       break;
+  //      case 'login-password-mfa':
+  //       loginWithPasswordMFA();
+  //       break;    
+  //     case 'passwordless-login':
+  //       passwordlessLogin();
+  //       break;
+  //     case 'passwordless-login-mfa':
+  //       passwordlessLoginMfa();
+  //       break;    
+  //     case 'mfa-login':
+  //       handleMFA();
+  //       break;
+  //     case 'mfa-activation-signup':
+  //       handleMFActivation(false);
+  //       break;
+  //     case 'mfa-activation-login':
+  //       handleMFActivation(true);
+  //       break;
+  //     default:
+  //       handleSubmit();
+  //       break;
+  //   }
+  // };
  
 
   return (
